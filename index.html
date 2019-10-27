@@ -1,0 +1,470 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/rust.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+                <section data-background="res/1280px-Rust_on_iron.jpg" data-background-opacity="0.8">
+                    <p class="rust-visible">
+                    A Brief Introduction to <font class="rust-accent">Rust</font>
+                    </p>
+                    <q class="rust-visible">A language empowering everyone to build reliable and efficient software.</q>
+                </section>
+                <section>
+                    <ul>
+                        <li>Introduction</li>
+                        <li>Common Pitfalls</li>
+                        <li class="rust-accent">Unique Features</li>
+                        <li>Ecosystem</li>
+                        <li>Questions</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>What is Rust?</h1>
+                    <ul>
+                        <li>
+                            system programming language (like C++)
+                        </li>
+                        <li>
+                            <font class="rust-accent">safe</font>, 
+                            <font class="rust-accent">concurrent</font> and 
+                            <font class="rust-accent">fast</font>
+                        </li>
+                    <li>
+                        Compiled, without runtime
+                    </li>
+                    <li>
+                        Static strong typing
+                    </li>
+                </section>
+                <section>
+                    <h1>Show Me Some Code!</h1>
+                    <pre><code data-trim>
+                        fn main() {
+                            let mut sum: i64 = 0;
+                            for i in 1..10 {
+                                if i % 2 == 0 {
+                                    sum += i;
+                                }
+                            }
+                            println!("sum is {}", sum);
+                        }
+                    </code></pre>
+                    <pre><code data-trim>
+                        fn main() {
+                            let sum: i64 = (1..10).filter(|i| i % 2 == 0).sum();
+                            println!("sum is {}", sum);
+                        }
+                    </code></pre>
+                </section>
+                <section>
+                    <p>Not Object Oriented (side note)</p>
+                    <pre><code class="stretch" data-trim>
+                        trait Resizable {
+                            fn resize(&mut self, ratio: f64);
+                        }
+
+                        impl Resizable for Circle {
+                            fn resize(&mut self, ratio: f64) {
+                                self.radius *= ratio;
+                            }
+                        }
+
+                        fn main() {
+                            let mut circle = Circle {
+                                radius: 4.,
+                                center: Point { x: 1.0, y: 2.0 },
+                            };
+                            circle.resize(2.);
+                            println!("circle: {:?}", circle);
+                        }
+                    </code></pre>
+                </section>
+                <section data-background="res/gaston_lagaffe_small.jpg" data-background-opacity="0.6">
+                    <h1 class="rust-visible">
+                        Common Pitfalls
+                    </h1>
+                </section>
+                <section>
+                    <h1>Overflows</h1>
+                    <img data-src="res/int_overflow_very_small.jpg" style="vertical-align:middle" height="200">
+                    <img data-src="res/Heartbleed.png" style="vertical-align:middle" height="200">
+                    <img data-src="res/Virus_Blaster.jpg" style="vertical-align:middle" height="200">
+                    <p>int overflow, buffer over-read, buffer overflow...</p>
+                    <p class="rust-accent">Runtime bound check</p>
+                </section>
+                <section>
+                    <h1>Memory Hazards</h1>
+                    <div>
+                    <img data-src="res/train_4.gif" style="vertical-align:middle">
+                    <ul style="vertical-align:middle">
+                        <li>dangling pointers</li>
+                        <li>memory leaks</li>
+                        <li>double free</li>
+                        <li>iterator invalidation</li>
+                        <li>...</li>
+                    </ul>
+                    </div>
+                    <p class="rust-accent">Ownership + Borrowing</p>
+                </section>
+                <section data-background="res/Double-crossing_1.gif" data-background-opacity="0.6">
+                    <h2 class="rust-visible">
+                        Concurrency Hazards
+                    </h2>
+                    <h3>data race</h3>
+                    <q>A <b>data race</b> is any unsynchronized, concurrent access to data involving a write</q>
+                    <p class="rust-accent">Ownership + Borrowing</p>
+                </section>
+                <section data-background="res/Ferrofluid_poles.jpg" data-background-opacity="0.6">
+                    <h2 class="rust-visible">Rust Unique Features</h2>
+                    <ul>
+                        <li>ownership &amp; borrowing</li>
+                        <li>lifetimes</li>
+                        <li>thread safety</li>
+                    </ul>
+                </section>
+                <section data-background="res/books.jpg" data-background-opacity="0.8">
+                    <h1 class="rust-visible"> Ownership </h1>
+                </section>
+                <section data-background="res/books.jpg" data-background-opacity="0.2">
+                    <h1>Ownership Rules</h1>
+                    <ul>
+                        <li>Each value in Rust has a variable that's called its owner</li>
+                        <li>There can only be one owner at a time.</li>
+                        <li>When the owner goes out of scope, the value will be dropped.</li>
+                    </ul>
+                    <p>Let's look at some examples!</p>
+                </section>
+                <section data-background="res/books.jpg" data-background-opacity="0.2">
+                    <p><font class="rust-accent">Owning</font> the Book</p>
+                    <pre><code data-trim class="stretch">
+                        struct Book;
+
+                        fn john() {
+                            let book = Book;// john creates the book and owns it
+                            // here john can do whatever he wants with the book
+                        } // at the end of his life,
+                          // john will destroy all his belongings
+
+                        fn steve() {
+                            let book = Book; // new book
+
+                            // he can do whatever he wants to do with his book
+
+                            sally(book); // steve gives the book to sally
+                            // sally has the responsability to destroy it
+
+                            // now steve cannot do anything with this book,
+                            // as it is not his personnal belonging anymore
+                        }
+                    </code></pre>
+                </section>
+                <section data-background="res/books.jpg" data-background-opacity="0.2">
+                    <p><font class="rust-accent">Borrowing</font> the Book</p>
+                    <pre><code data-trim class="stretch">
+                        fn my() {
+                            let mut book = Book;
+
+                            spelling_corrector(&mut book);
+                            // we must explicitly mention that we lend the book
+                            // and we don't give it away
+
+                            reader(&book);
+                        }
+
+                        fn spelling_corrector(book: &mut Book) {
+                            // correct spelling in place
+                        }
+
+                        fn reader(book: &Book) {
+                            // read a book
+                        }
+                    </code></pre>
+                </section>
+                <section data-background="res/books.jpg" data-background-opacity="0.2">
+                    <p><font class="rust-accent">Borrowing</font> the Homework</p>
+                    <pre><code data-trim class="stretch">
+                        #[derive(Clone)]
+                        struct Homework;
+
+                        fn my() {
+                            let homework = Homework;
+
+                            friend(&homework);
+                        }
+
+                        fn friend(work: &Homework) { // we lend it immutably
+                            let mut homework: Homework = work.clone();
+                            // your friend now has his own modifiable copy
+                        }
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>Rust References</h1>
+                    <h2>Borrowing values</h2>
+                    <ul>
+                        <li>At any given time, you may have:</li>
+                        <ul>
+                            <li>either exactly one mutable reference (<font class="rust-mono">&mutT</font>)</li>
+                            <li>or one or more immutable references (<font class="rust-mono">&T</font>)</li>
+                        </ul>
+                        <li>References are guaranteed to be valid</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>Iterator Invalidation</h1>
+                    <img data-src="res/wallace_and_gromit_1.gif">
+                </section>
+                <section>
+                    <h1>Iterator Invalidation</h1>
+                    <pre><code data-trim>
+                    fn main() {
+                        let mut v = vec![0; 2];
+                        println!("capacity: {}", v.capacity());
+                        for _each in v.iter() {
+                            v.push(1); // ?
+                        }
+                        println!("capacity: {}", v.capacity());
+                    }
+                    </code></pre>
+                    <q>At any given time, you can have either one mutable reference xor any number of immutable references</q>
+                </section>
+                <section>
+                    <h1>Lifetimes</h1>
+                    <pre><code data-trim>
+                    {
+                        let r;                // ---------+-- 'a
+                                              //          |
+                        {                     //          |
+                            let x = 5;        // -+-- 'b  |
+                            r = &x;           //  |       |
+                        }                     // -+       |
+                                              //          |
+                        println!("r: {}", r); //          |
+                    }                         // ---------+
+                    </code></pre>
+                    <pre><code data-trim>
+                    {
+                        let x = 5;            // ----------+-- 'b
+                                              //           |
+                        let r = &x;           // --+-- 'a  |
+                                              //   |       |
+                        println!("r: {}", r); //   |       |
+                                              // --+       |
+                    }                         // ----------+
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>Dangling pointers</h1>
+                    <pre><code data-trim>
+                    /// dangle returns a reference to a String
+                    fn dangle() -> &String {
+                        let s = String::from("hello"); // s is a new String
+                        &s // we return a reference to the String, s
+                    }
+
+                    fn main() {
+                        let s = dangle();
+                    }
+                    </code></pre>
+                    <q>References are always valid</q>
+                </section>
+                <section data-background="res/Tightrope_walking.jpg" data-background-opacity="0.1">
+                    <h2>Thread Safety</h2>
+                    <pre><code data-trim>
+                    use std::thread;
+
+                    fn main() {
+                        let mut v = vec![];
+                        thread::spawn(move || { // v is moved into closure
+                            v.push(2);
+                        });
+                        v.push(3);
+                    //  ^ value borrowed here after move
+                    }
+                    </code></pre>
+                </section>
+                <section data-background="res/Tightrope_walking.jpg" data-background-opacity="0.1">
+                    <h2>Thread Safety</h2>
+                    <h3>Sharing Data</h3>
+                    <pre><code data-trim>
+                    use std::thread;
+                    // A thread-safe reference-counting pointer
+                    use std::sync::Arc;
+
+                    fn main() {
+                        let v = Arc::new(vec![1, 2, 3]);
+                        let v2 = v.clone();
+                        let child = thread::spawn(move || {
+                            println!("{:?}", v2);
+                        });
+                        child.join().expect("child thread error");
+                        println!("{:?}", v);
+                    }
+                    </code></pre>
+                </section>
+                <section data-background="res/Tightrope_walking.jpg" data-background-opacity="0.1">
+                    <h2>Thread Safety</h2>
+                    <h3>Preventing Unsynchronized Writes</h3>
+                    <pre><code data-trim>
+                        use std::sync::Arc;
+
+                        fn main() {
+                            let mut v = Arc::new(vec![1, 2, 3]);
+                            v.push(42);
+                        //  ^ cannot borrow as mutable
+                        }
+                    </code></pre>
+                </section>
+                <section data-background="res/Tightrope_walking.jpg" data-background-opacity="0.1">
+                    <h2>Thread Safety</h2>
+                    <h3>Allowing Concurrent Mutation</h3>
+                    <pre><code data-trim>
+                    use std::thread;
+                    use std::sync::{Arc, Mutex};
+
+                    fn main() {
+                        let v = Arc::new(Mutex::new(vec![1, 2, 3]));
+                        let v2 = v.clone();
+                        let child = thread::spawn(move || {
+                            let mut vector = v2.lock().unwrap();
+                            vector.push(4);
+                        });
+                        child.join().expect("child thread error");
+                        println!("{}", v.lock().unwrap().len());
+                    }
+                    </code></pre>
+                </section>
+                <section data-background="res/Maldivesfish.jpg" data-background-opacity="0.6">
+                    <h1 class="rust-visible">Rust Ecosystem</h1>
+                    <h2 class="rust-visible">(Rust today)</h2>
+                </section>
+                <section data-background="res/crates.jpg" data-background-opacity="0.6">
+                    <h1 class="rust-visible">Rust Tools</h1>
+                    <img data-src="res/rust_tools.png" style="vertical-align:middle" height="400">
+                    <ul style="vertical-align:middle">
+                        <li>cargo</li>
+                        <li>rustup</li>
+                        <li>rustdoc</li>
+                        <li>rustfmt</li>
+                        <li>clippy</li>
+                    </ul>
+                    <small>source: <a href="https://ashleygwilliams.github.io/gotober-2018/#54">https://ashleygwilliams.github.io/gotober-2018/#54</a></small>
+                </section>
+                <section data-background="res/crates.jpg" data-background-opacity="0.1">
+                    <h3>Rust in Production</h3>
+                    <ul>
+                        <li><b>Google</b></li>
+                        <ul>
+                            <li>Crosvm (Chrome OS VM Monitor) 116k Rust</li>
+                            <li>Fuchsia (OS) 1153k C++, 1430k Rust</li>
+                        </ul>
+                        <li><b>Dropbox</b></li>
+                        <ul>
+                            <li>Rust-brotli (lossless compression) 108k Rust</li>
+                        </ul>
+                        <li><b>Mozilla</b></li>
+                        <ul>
+                            <li>Servo (Parallel Browser Engine) 278k Rust</li>
+                        </ul>
+                        <li><b>Facebook</b></li>
+                        <ul>
+                            <li>Custom Mercurial 3k Rust</li>
+                            <li>Libra (Facebook Currency) 111k Rust</li>
+                        </ul>
+                        <li class="rust-accent">You?</li>
+                    </ul>
+                </section>
+                <section>
+                    Thank You
+                </section>
+                <section>
+                    Questions?
+                    <p>
+                        <img data-src="res/rustacean-flat-happy-small.png">
+                    </p>
+                </section>
+                <section>
+                    <p>References</p>
+                    <p><small><a href="https://github.com/hakimel/reveal.js">these slides are made with reveal.js</a></small></p>
+                    <p><small><a href="https://hauleth.dev/post/eli5-ownership/">Here be (owned) books (article by hauleth)</a></small></p>
+                    <p><small><a href="https://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html">Fearless Concurrency with Rust (article by Aaron Turon)</a></small></p>
+                    <p><small><a href="https://www.youtube.com/watch?v=oAZ7F7bqT-o">Concurrency in Rust (conf by Alex Crichton)</a></small></p>
+
+                </section>
+                <section>
+                    <p>Illustrations</p>
+                    <font size="4">
+                    <table>
+                    <tr>
+                        <td>
+                            <p><tiny><a href="https://en.wikipedia.org/wiki/Rust#/media/File:Rust_on_iron.jpg">rust on iron</a></tiny></p>
+                            <p><tiny><a href="http://www.gastonlagaffe.com">gaston lagaffe</a></tiny></p>
+                            <p><tiny><a href="https://en.wikipedia.org/wiki/Integer_overflow">integer overflow</a></tiny></p>
+                            <p><tiny><a href="https://en.wikipedia.org/wiki/Heartbleed">heartbleed</a></tiny></p>
+                            <p><tiny><a href="https://en.wikipedia.org/wiki/Blaster_(computer_worm)">blaster worm</a></tiny></p>
+                            <p><tiny><a href="https://en.wikipedia.org/wiki/The_General_(1926_film)">train wreck</a></tiny></p>
+                            <p><tiny><a href="https://wiki.factorio.com/Tutorial:Train_signals">train signals</a></tiny></p>
+                        </td>
+                        <td>
+                            <p><tiny><a href="https://en.wikipedia.org/wiki/Ferrofluid">ferrofluid</a></tiny></p>
+                            <p><tiny><a href="https://en.wikipedia.org/wiki/Biblioth%C3%A8que_nationale_de_France#/media/File:France,_Paris,_Biblioth%C3%A8que_nationale_de_France,_site_Richelieu,_salle_ovale.jpg">reading room</a></tiny></p>
+                            <p><tiny><a href="https://en.wikipedia.org/wiki/Wallace_%26_Gromit:_The_Curse_of_the_Were-Rabbit">wallace and gromit</a></tiny></p>
+                            <p><tiny><a href="https://en.wikipedia.org/wiki/Tightrope_walking#/media/File:Tightrope_walking.jpg">tight rope walking</a></tiny></p>
+                            <p><tiny><a href="https://en.wikipedia.org/wiki/Marine_ecosystem">marine ecosystem</a></tiny></p>
+                            <p><tiny><a href="https://commons.wikimedia.org/wiki/File:ZIM_New_York_(ship,_2002)_002.jpg">cargo ship</a></tiny></p>
+                            <p><tiny><a href="https://rustacean.net/">ferris (rust unofficial mascot)</a></tiny></p>
+                        </td>
+                    </tr>
+                    </table>
+                    </font>
+                </section>
+			</div>
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true }
+				]});
+            // Shows the slide number using default formatting
+            Reveal.configure({ slideNumber: true });
+            // Slide number formatting can be configured using these variables:
+            //  "h.v": 	horizontal . vertical slide number (default)
+            //  "h/v": 	horizontal / vertical slide number
+            //    "c": 	flattened slide number
+            //  "c/t": 	flattened slide number / total slides
+            Reveal.configure({ slideNumber: 'c/t' });
+		</script>
+	</body>
+</html>

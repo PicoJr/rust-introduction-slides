@@ -1,0 +1,12 @@
+.rust-accent {
+    color: #FF9800;
+}
+
+.rust-visible {
+    background: rgba(0,0,0,0.6);
+}
+
+.rust-mono {
+    font-family: monospace, monospace;
+    color: #FF9800;
+}
