@@ -2,6 +2,8 @@
 
 A brief introduction to the Rust programming language core concepts (ownership and borrowing + lifetimes).
 
+the slides are [here](https://picojr.github.io/rust-introduction-slides/)
+
 slides made with https://github.com/hakimel/reveal.js
 
 ## References
