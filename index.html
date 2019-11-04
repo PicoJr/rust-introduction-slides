@@ -237,19 +237,30 @@
                     <h1>Iterator Invalidation</h1>
                     <img data-src="res/wallace_and_gromit_1.gif">
                 </section>
-                <section>
-                    <h1>Iterator Invalidation</h1>
+                <section id="fragments">
+                    <h2>Iterator Invalidation</h2>
                     <pre><code data-trim>
-                    fn main() {
-                        let mut v = vec![0; 2];
-                        println!("capacity: {}", v.capacity());
-                        for _each in v.iter() {
-                            v.push(1); // ?
+                        fn main() {
+                            let mut v = vec![0; 2];
+                            for _each in v.iter() {
+                                v.push(1); // ?
+                            }
+                            println!("{:?}", v);
                         }
-                        println!("capacity: {}", v.capacity());
-                    }
                     </code></pre>
-                    <q>At any given time, you can have either one mutable reference xor any number of immutable references</q>
+                    <pre class="fragment"><code data-trim>
+                        error[E0502]: cannot borrow `v` as mutable because
+                        it is also borrowed as immutable
+                         --> src/main.rs:4:9
+                          |
+                        3 |     for _each in v.iter() {
+                          |                  --------
+                          |                  |
+                          |                  immutable borrow occurs here
+                          |                  immutable borrow later used here
+                        4 |         v.push(1); // ?
+                          |         ^^^^^^^^^ mutable borrow occurs here
+                    </code></pre>
                 </section>
                 <section id="fragments">
                     <h1>Lifetimes</h1>
@@ -267,12 +278,12 @@
                         error[E0597]: `x` does not live long enough
                          --> src/main.rs:6:9
                           |
-                        6 |         r = &x;           //  |       |
+                        6 |         r = &x;
                           |         ^^^^^^ borrowed value does not live long enough
-                        7 |     }                     // -+       |
+                        7 |     }
                           |     - `x` dropped here while still borrowed
-                        8 |                           //          |
-                        9 |     println!("r: {}", r); //          |
+                        8 |
+                        9 |     println!("r: {}", r);
                           |                       - borrow later used here
                     </code></pre>
                 </section>
@@ -288,6 +299,7 @@
                                               // --+       |
                     }                         // ----------+
                     </code></pre>
+                    <p><font class="rust-accent">(correct)</font></p>
                 </section>
                 <section>
                     <h1>Dangling pointers</h1>
