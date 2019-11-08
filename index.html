@@ -302,7 +302,7 @@
                     <p><font class="rust-accent">(correct)</font></p>
                 </section>
                 <section>
-                    <h1>Dangling pointers</h1>
+                    <h2>Dangling pointers</h2>
                     <pre><code data-trim>
                     /// dangle returns a reference to a String
                     fn dangle() -> &String {
@@ -360,7 +360,7 @@
                         fn main() {
                             let mut v = Arc::new(vec![1, 2, 3]);
                             v.push(42);
-                        //  ^ cannot borrow as mutable
+                        //  ^ cannot borrow data in an Arc as mutable
                         }
                     </code></pre>
                 </section>
