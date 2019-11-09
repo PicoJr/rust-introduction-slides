@@ -163,22 +163,21 @@
                         struct Book;
 
                         fn john() {
-                            let book = Book;// john creates the book and owns it
-                            // here john can do whatever he wants with the book
-                        } // at the end of his life,
-                          // john will destroy all his belongings
+                            let book = Book; // john owns the book
+                        } // john destroys his book
+                    </code></pre>
+                    <pre><code data-trim class="stretch">
+                        struct Book;
 
                         fn steve() {
-                            let book = Book; // new book
-
-                            // he can do whatever he wants to do with his book
+                            let book = Book; // steve owns the book
 
                             sally(book); // steve gives the book to sally
-                            // sally has the responsability to destroy it
-
-                            // now steve cannot do anything with this book,
-                            // as it is not his personnal belonging anymore
                         }
+
+                        fn sally(book) {
+                            // sally owns the book
+                        } // sally destroys her book
                     </code></pre>
                 </section>
                 <section data-background="res/books.jpg" data-background-opacity="0.2">
