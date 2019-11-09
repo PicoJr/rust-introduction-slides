@@ -53,15 +53,15 @@
                             <font class="rust-accent">fast</font>
                         </li>
                     <li>
-                        Compiled, without runtime
+                        compiled, without runtime
                     </li>
                     <li>
-                        Static strong typing
+                        static strong typing
                     </li>
                 </section>
                 <section>
                     <h1>Show Me Some Code!</h1>
-                    <pre><code data-trim>
+                    <pre><code data-trim class="rust">
                         fn main() {
                             let mut sum: i64 = 0;
                             for i in 1..10 {
@@ -72,7 +72,7 @@
                             println!("sum is {}", sum);
                         }
                     </code></pre>
-                    <pre><code data-trim>
+                    <pre><code data-trim class="rust">
                         fn main() {
                             let sum: i64 = (1..10).filter(|i| i % 2 == 0).sum();
                             println!("sum is {}", sum);
@@ -248,7 +248,7 @@
                             println!("{:?}", v);
                         }
                     </code></pre>
-                    <pre class="fragment"><code data-trim>
+                    <pre class="fragment"><code data-trim class="console">
                         error[E0502]: cannot borrow `v` as mutable because
                         it is also borrowed as immutable
                          --> src/main.rs:4:9
@@ -274,7 +274,7 @@
                             println!("r: {}", r); //          |
                         }                         // ---------+
                     </code></pre>
-                    <pre class="fragment"><code data-trim>
+                    <pre class="fragment"><code data-trim class="console">
                         error[E0597]: `x` does not live long enough
                          --> src/main.rs:6:9
                           |
@@ -302,7 +302,7 @@
                     <p><font class="rust-accent">(correct)</font></p>
                 </section>
                 <section>
-                    <h2>Dangling pointers</h2>
+                    <h2>No dangling pointers</h2>
                     <pre><code data-trim>
                     /// dangle returns a reference to a String
                     fn dangle() -> &String {
@@ -386,7 +386,7 @@
                 </section>
                 <section data-background="res/Maldivesfish.jpg" data-background-opacity="0.6">
                     <h1 class="rust-visible">Rust Ecosystem</h1>
-                    <h2 class="rust-visible">(Rust today)</h2>
+                    <h2 class="rust-visible">(Nov 2019)</h2>
                 </section>
                 <section data-background="res/crates.jpg" data-background-opacity="0.6">
                     <h1 class="rust-visible">Rust Tools</h1>
