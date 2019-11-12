@@ -142,7 +142,8 @@
                     <ul>
                         <li>ownership &amp; borrowing</li>
                         <li>lifetimes</li>
-                        <li>thread safety</li>
+                        <li>&rArr; memory safety</li>
+                        <li>&rArr; thread safety</li>
                     </ul>
                 </section>
                 <section data-background="res/books.jpg" data-background-opacity="0.8">
@@ -155,7 +156,7 @@
                         <li>There can only be one owner at a time.</li>
                         <li>When the owner goes out of scope, the value will be dropped.</li>
                     </ul>
-                    <p>Let's look at some examples!</p>
+                    <p>Let's look at some <font class="rust-accent">book</font> examples!</p>
                 </section>
                 <section data-background="res/books.jpg" data-background-opacity="0.2">
                     <p><font class="rust-accent">Owning</font> the Book</p>
@@ -229,15 +230,15 @@
                             <li>either exactly one mutable reference (<font class="rust-mono">&mutT</font>)</li>
                             <li>or one or more immutable references (<font class="rust-mono">&T</font>)</li>
                         </ul>
-                        <li>References are guaranteed to be valid</li>
+                        <li><b>References are guaranteed</b> (by the compiler) <b>to be valid</b></li>
                     </ul>
                 </section>
                 <section>
-                    <h1>Iterator Invalidation</h1>
+                    <h1>No Iterator Invalidation</h1>
                     <img data-src="res/wallace_and_gromit_1.gif">
                 </section>
                 <section id="fragments">
-                    <h2>Iterator Invalidation</h2>
+                    <h2>No Iterator Invalidation</h2>
                     <pre><code data-trim>
                         fn main() {
                             let mut v = vec![0; 2];
@@ -299,21 +300,13 @@
                     }                         // ----------+
                     </code></pre>
                     <p><font class="rust-accent">(correct)</font></p>
+                    <q>The compiler checks references are valid w.r.t referenced values lifetimes</q>
                 </section>
-                <section>
-                    <h2>No dangling pointers</h2>
-                    <pre><code data-trim>
-                    /// dangle returns a reference to a String
-                    fn dangle() -> &String {
-                        let s = String::from("hello"); // s is a new String
-                        &s // we return a reference to the String, s
-                    }
-
-                    fn main() {
-                        let s = dangle();
-                    }
-                    </code></pre>
-                    <q>References are always valid</q>
+                <section data-background="res/Tightrope_walking.jpg" data-background-opacity="0.2">
+                    <h2>Thread Safety</h2>
+                    <p>
+                    Rust ownership <font class="rust-accent">&rArr;</font> thread-safety
+                    </p>
                 </section>
                 <section data-background="res/Tightrope_walking.jpg" data-background-opacity="0.1">
                     <h2>Thread Safety</h2>
