@@ -79,29 +79,6 @@
                         }
                     </code></pre>
                 </section>
-                <section>
-                    <p>Not Object Oriented (side note)</p>
-                    <pre><code class="stretch" data-trim>
-                        trait Resizable {
-                            fn resize(&mut self, ratio: f64);
-                        }
-
-                        impl Resizable for Circle {
-                            fn resize(&mut self, ratio: f64) {
-                                self.radius *= ratio;
-                            }
-                        }
-
-                        fn main() {
-                            let mut circle = Circle {
-                                radius: 4.,
-                                center: Point { x: 1.0, y: 2.0 },
-                            };
-                            circle.resize(2.);
-                            println!("circle: {:?}", circle);
-                        }
-                    </code></pre>
-                </section>
                 <section data-background="res/gaston_lagaffe_small.jpg" data-background-opacity="0.6">
                     <h1 class="rust-visible">
                         Common Pitfalls
@@ -200,24 +177,6 @@
 
                         fn reader(book: &Book) {
                             // read a book
-                        }
-                    </code></pre>
-                </section>
-                <section data-background="res/books.jpg" data-background-opacity="0.2">
-                    <p><font class="rust-accent">Borrowing</font> the Homework</p>
-                    <pre><code data-trim class="stretch">
-                        #[derive(Clone)]
-                        struct Homework;
-
-                        fn my() {
-                            let homework = Homework;
-
-                            friend(&homework);
-                        }
-
-                        fn friend(work: &Homework) { // we lend it immutably
-                            let mut homework: Homework = work.clone();
-                            // your friend now has his own modifiable copy
                         }
                     </code></pre>
                 </section>
